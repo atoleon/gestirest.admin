@@ -105,3 +105,16 @@ export type GastosTabla = {
   vencimiento: string;
   estado: string;
 }
+
+export type GastoForm = {
+  id: string;
+  proveedor_id: string;
+  fecha: string | null;
+  numero: string | null;
+  importe: number;
+  forma_pago: string;
+  tipo_gasto: string;
+  formato: string;
+  vencimiento: string | null;
+  estado: 'Pendiente' | 'Pagado';
+}

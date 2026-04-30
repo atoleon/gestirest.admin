@@ -1,6 +1,6 @@
 'use client';
 
-import { ProveedorField } from '@/app/lib/definitions';
+import { GastoForm, ProveedorField } from '@/app/lib/definitions';
 import Link from 'next/link';
 import {
   BanknotesIcon,
@@ -9,16 +9,23 @@ import {
   HashtagIcon,
   TruckIcon,
   CalendarIcon,
-  DocumentCheckIcon
+  DocumentCheckIcon,
 } from '@heroicons/react/24/outline';
 import { Button } from '@/app/ui/button';
-import { crearGasto, State } from '@/app/lib/gastos/actions';
+import { actualizarGasto, State } from '@/app/lib/gastos/actions';
 import { formaPago, tipoGasto, formatoGasto, estadoGasto } from '@/app/lib/data-sets';
 import { useActionState } from 'react';
 
-export default function Form({ proveedores }: { proveedores: ProveedorField[] }) {
+export default function EditGastoForm({
+  gasto,
+  proveedores,
+}: {
+  gasto: GastoForm;
+  proveedores: ProveedorField[];
+}) {
   const initialState: State = { message: null, errors: {} };
-  const [state, formAction] = useActionState(crearGasto, initialState);
+  const actualizarGastoConId = actualizarGasto.bind(null, gasto.id);
+  const [state, formAction] = useActionState(actualizarGastoConId, initialState);
 
   return (
     <form action={formAction}>
@@ -33,7 +40,7 @@ export default function Form({ proveedores }: { proveedores: ProveedorField[] })
               id="proveedor"
               name="proveedorId"
               className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-              defaultValue=""
+              defaultValue={gasto.proveedor_id}
               aria-describedby="proveedor-error"
             >
               <option value="" disabled>
@@ -69,6 +76,7 @@ export default function Form({ proveedores }: { proveedores: ProveedorField[] })
                 name="fecha"
                 type="string"
                 placeholder="AAAA-MM-DD"
+                defaultValue={gasto.fecha ?? ''}
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="fecha-error"
               />
@@ -97,6 +105,7 @@ export default function Form({ proveedores }: { proveedores: ProveedorField[] })
                 name="numero"
                 type="string"
                 placeholder="Introduce número de documento"
+                defaultValue={gasto.numero ?? ''}
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="numero-error"
               />
@@ -126,6 +135,7 @@ export default function Form({ proveedores }: { proveedores: ProveedorField[] })
                 type="number"
                 step="0.01"
                 placeholder="Introduce importe"
+                defaultValue={gasto.importe}
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="importe-error"
               />
@@ -152,7 +162,7 @@ export default function Form({ proveedores }: { proveedores: ProveedorField[] })
               id="forma-pago"
               name="formaPago"
               className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-              defaultValue=""
+              defaultValue={gasto.forma_pago}
               aria-describedby="forma-pago-error"
             >
               <option value="" disabled>
@@ -186,7 +196,7 @@ export default function Form({ proveedores }: { proveedores: ProveedorField[] })
               id="tipo-gasto"
               name="tipoGasto"
               className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-              defaultValue=""
+              defaultValue={gasto.tipo_gasto}
               aria-describedby="tipo-gasto-error"
             >
               <option value="" disabled>
@@ -220,7 +230,7 @@ export default function Form({ proveedores }: { proveedores: ProveedorField[] })
               id="formato"
               name="formato"
               className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-              defaultValue=""
+              defaultValue={gasto.formato}
               aria-describedby="formato-error"
             >
               <option value="" disabled>
@@ -256,6 +266,7 @@ export default function Form({ proveedores }: { proveedores: ProveedorField[] })
                 name="vencimiento"
                 type="string"
                 placeholder="AAAA-MM-DD"
+                defaultValue={gasto.vencimiento ?? ''}
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="vencimiento-error"
               />
@@ -282,7 +293,7 @@ export default function Form({ proveedores }: { proveedores: ProveedorField[] })
               id="estado"
               name="estado"
               className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-              defaultValue=""
+              defaultValue={gasto.estado}
               aria-describedby="estado-error"
             >
               <option value="" disabled>
@@ -319,7 +330,7 @@ export default function Form({ proveedores }: { proveedores: ProveedorField[] })
         >
           Cancelar
         </Link>
-        <Button type="submit">Crear Gasto</Button>
+        <Button type="submit">Actualizar Gasto</Button>
       </div>
     </form>
   );

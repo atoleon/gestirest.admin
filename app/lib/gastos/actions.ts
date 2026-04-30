@@ -4,9 +4,6 @@ import { z } from 'zod';
 import postgres from 'postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { signIn } from '@/auth';
-import { AuthError } from 'next-auth';
-import { formaPago } from '../data-sets';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -30,6 +27,7 @@ const FormSchema = z.object({
 });
 
 const CrearGasto = FormSchema.omit({ id: true, created_at: true });
+const ActualizarGasto = FormSchema.omit({ id: true, created_at: true });
 
 export type State = {
   errors?: {
@@ -89,4 +87,55 @@ export async function crearGasto(prevState: State, formData: FormData) {
   // Revalidate the cache for the gastos page and redirect the user.
   revalidatePath('/dashboard/gastos');
   redirect('/dashboard/gastos');
+}
+
+export async function actualizarGasto(id: string, _prevState: State, formData: FormData) {
+  const validatedFields = ActualizarGasto.safeParse({
+    fecha: formData.get('fecha') || null,
+    proveedorId: formData.get('proveedorId'),
+    numero: formData.get('numero'),
+    importe: formData.get('importe'),
+    formaPago: formData.get('formaPago'),
+    tipoGasto: formData.get('tipoGasto'),
+    formato: formData.get('formato'),
+    vencimiento: formData.get('vencimiento') || null,
+    estado: formData.get('estado'),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Update Gasto.',
+    };
+  }
+
+  const { fecha, proveedorId, numero, importe, formaPago, tipoGasto, formato, vencimiento, estado } = validatedFields.data;
+
+  try {
+    await sql`
+      UPDATE gastos
+      SET fecha = ${fecha}, proveedor_id = ${proveedorId}, numero = ${numero}, importe = ${importe},
+          forma_pago = ${formaPago}, tipo_gasto = ${tipoGasto}, formato = ${formato},
+          vencimiento = ${vencimiento}, estado = ${estado}
+      WHERE id = ${id}
+    `;
+  } catch (error) {
+    console.log('Database Error:', error);
+    return {
+      message: 'Database Error: Failed to Update Gasto.',
+    };
+  }
+
+  revalidatePath('/dashboard/gastos');
+  redirect('/dashboard/gastos');
+}
+
+export async function borrarGasto(id: string): Promise<void> {
+  try {
+    await sql`DELETE FROM gastos WHERE id = ${id}`;
+    revalidatePath('/dashboard/gastos');
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to Delete Gasto.');
+  }
 }

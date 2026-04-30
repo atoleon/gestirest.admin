@@ -1,11 +1,11 @@
 import postgres from 'postgres';
 import {
   CustomersTableType,
-  InvoiceForm,
   LatestInvoiceRaw,
   Revenue,
   ProveedorField,
-  GastosTabla
+  GastosTabla,
+  GastoForm
 } from '../definitions';
 import { formatCurrency } from '../utils';
 
@@ -145,28 +145,28 @@ export async function fetchGastosPaginas(query: string) {
   }
 }
 
-export async function fetchInvoiceById(id: string) {
+export async function fetchGastoById(id: string) {
   try {
-    const data = await sql<InvoiceForm[]>`
+    const data = await sql<GastoForm[]>`
       SELECT
-        invoices.id,
-        invoices.customer_id,
-        invoices.amount,
-        invoices.status
-      FROM invoices
-      WHERE invoices.id = ${id};
+        gastos.id,
+        gastos.proveedor_id,
+        gastos.fecha,
+        gastos.numero,
+        gastos.importe,
+        gastos.forma_pago,
+        gastos.tipo_gasto,
+        gastos.formato,
+        gastos.vencimiento,
+        gastos.estado
+      FROM gastos
+      WHERE gastos.id = ${id};
     `;
 
-    const invoice = data.map((invoice) => ({
-      ...invoice,
-      // Convert amount from cents to dollars
-      amount: invoice.amount / 100,
-    }));
-
-    return invoice[0];
+    return data[0];
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch invoice.');
+    throw new Error('Failed to fetch gasto.');
   }
 }
 

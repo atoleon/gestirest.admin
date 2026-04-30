@@ -1,5 +1,4 @@
-import Image from 'next/image';
-import { UpdateInvoice, DeleteInvoice } from '@/app/ui/invoices/buttons';
+import { ActualizarGasto, BorrarGasto } from '@/app/ui/gastos/buttons';
 import GastoEstado from '@/app/ui/gastos/status';
 import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
 import { fetchFilteredGastos } from '@/app/lib/gastos/data';
@@ -40,8 +39,8 @@ export default async function GastoTabla({
                     <p>{formatDateToLocal(gasto.fecha)}</p>
                   </div>
                   <div className="flex justify-end gap-2">
-                    <UpdateInvoice id={gasto.id} />
-                    <DeleteInvoice id={gasto.id} />
+                    <ActualizarGasto id={gasto.id} />
+                    <BorrarGasto id={gasto.id} />
                   </div>
                 </div>
               </div>
@@ -117,8 +116,8 @@ export default async function GastoTabla({
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
-                      <UpdateInvoice id={gasto.id} />
-                      <DeleteInvoice id={gasto.id} />
+                      <ActualizarGasto id={gasto.id} />
+                      <BorrarGasto id={gasto.id} />
                     </div>
                   </td>
                 </tr>
