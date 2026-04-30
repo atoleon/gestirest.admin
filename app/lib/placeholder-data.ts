@@ -144,4 +144,35 @@ const revenue = [
   { month: 'Dec', revenue: 4800 },
 ];
 
-export { users, customers, invoices, revenue };
+const proveedores = [
+  { id: 1, nombre: 'Distribuidora Alimentaria García' },
+  { id: 2, nombre: 'Bebidas y Refrescos SA' },
+  { id: 3, nombre: 'Servicios de Limpieza López' },
+  { id: 4, nombre: 'Gas y Suministros Norte' },
+  { id: 5, nombre: 'Equipamientos Hostelería' },
+];
+
+const gastos = [
+  { fecha: '2026-01-05', proveedor_id: 1, numero: 'FAC-2026-001', importe: 1250.00, forma_pago: 'Transferencia', tipo_gasto: 'Comida', formato: 'Digital', vencimiento: '2026-01-20', estado: 'Pagado' },
+  { fecha: '2026-01-08', proveedor_id: 2, numero: 'FAC-2026-002', importe: 430.50, forma_pago: 'Domiciliado', tipo_gasto: 'Bebida', formato: 'Digital', vencimiento: null, estado: 'Pagado' },
+  { fecha: '2026-01-10', proveedor_id: 3, numero: 'TKT-0045', importe: 180.00, forma_pago: 'Efectivo', tipo_gasto: 'Servicio', formato: 'Ticket', vencimiento: null, estado: 'Pagado' },
+  { fecha: '2026-01-15', proveedor_id: 4, numero: 'REC-0112', importe: 320.75, forma_pago: 'Domiciliado', tipo_gasto: 'Servicio', formato: 'Recibo', vencimiento: '2026-02-15', estado: 'Pagado' },
+  { fecha: '2026-01-20', proveedor_id: 1, numero: 'FAC-2026-008', importe: 980.00, forma_pago: 'Transferencia', tipo_gasto: 'Comida', formato: 'Digital', vencimiento: '2026-02-05', estado: 'Pagado' },
+  { fecha: '2026-02-03', proveedor_id: 5, numero: 'FAC-2026-011', importe: 2100.00, forma_pago: 'Pagaré', tipo_gasto: 'Mantenimiento', formato: 'Papel', vencimiento: '2026-05-03', estado: 'Pendiente' },
+  { fecha: '2026-02-07', proveedor_id: 2, numero: 'FAC-2026-015', importe: 560.25, forma_pago: 'Domiciliado', tipo_gasto: 'Bebida', formato: 'Digital', vencimiento: null, estado: 'Pagado' },
+  { fecha: '2026-02-10', proveedor_id: 1, numero: 'FAC-2026-018', importe: 1430.00, forma_pago: 'Transferencia', tipo_gasto: 'Comida', formato: 'Digital', vencimiento: '2026-02-25', estado: 'Pagado' },
+  { fecha: '2026-02-14', proveedor_id: 3, numero: 'TKT-0067', importe: 210.00, forma_pago: 'Efectivo', tipo_gasto: 'Consumible', formato: 'Ticket', vencimiento: null, estado: 'Pagado' },
+  { fecha: '2026-02-20', proveedor_id: 4, numero: 'REC-0134', importe: 340.00, forma_pago: 'Domiciliado', tipo_gasto: 'Servicio', formato: 'Recibo', vencimiento: '2026-03-20', estado: 'Pagado' },
+  { fecha: '2026-03-01', proveedor_id: 1, numero: 'FAC-2026-024', importe: 1100.50, forma_pago: 'Transferencia', tipo_gasto: 'Comida', formato: 'Digital', vencimiento: '2026-03-16', estado: 'Pagado' },
+  { fecha: '2026-03-05', proveedor_id: 5, numero: 'FAC-2026-027', importe: 850.00, forma_pago: 'Cheque', tipo_gasto: 'Mantenimiento', formato: 'Papel', vencimiento: '2026-04-05', estado: 'Pendiente' },
+  { fecha: '2026-03-10', proveedor_id: 2, numero: 'FAC-2026-030', importe: 495.75, forma_pago: 'Domiciliado', tipo_gasto: 'Bebida', formato: 'Digital', vencimiento: null, estado: 'Pagado' },
+  { fecha: '2026-03-18', proveedor_id: 3, numero: 'TKT-0089', importe: 165.00, forma_pago: 'Tarjeta', tipo_gasto: 'Consumible', formato: 'Ticket', vencimiento: null, estado: 'Pagado' },
+  { fecha: '2026-04-02', proveedor_id: 1, numero: 'FAC-2026-041', importe: 1380.00, forma_pago: 'Transferencia', tipo_gasto: 'Comida', formato: 'Digital', vencimiento: '2026-04-17', estado: 'Pendiente' },
+  { fecha: '2026-04-05', proveedor_id: 4, numero: 'REC-0158', importe: 320.00, forma_pago: 'Domiciliado', tipo_gasto: 'Servicio', formato: 'Recibo', vencimiento: '2026-05-05', estado: 'Pendiente' },
+  { fecha: '2026-04-10', proveedor_id: 2, numero: 'FAC-2026-047', importe: 610.00, forma_pago: 'Domiciliado', tipo_gasto: 'Bebida', formato: 'Digital', vencimiento: null, estado: 'Pagado' },
+  { fecha: '2026-04-15', proveedor_id: 5, numero: 'FAC-2026-052', importe: 3200.00, forma_pago: 'Pagaré', tipo_gasto: 'Varios', formato: 'Papel', vencimiento: '2026-07-15', estado: 'Pendiente' },
+  { fecha: '2026-04-20', proveedor_id: 3, numero: 'TKT-0101', importe: 195.00, forma_pago: 'Efectivo', tipo_gasto: 'Consumible', formato: 'Ticket', vencimiento: null, estado: 'Pendiente' },
+  { fecha: '2026-04-28', proveedor_id: 1, numero: 'FAC-2026-059', importe: 1520.75, forma_pago: 'Transferencia', tipo_gasto: 'Comida', formato: 'Digital', vencimiento: '2026-05-13', estado: 'Pendiente' },
+];
+
+export { users, customers, invoices, revenue, proveedores, gastos };

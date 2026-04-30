@@ -1,12 +1,11 @@
 import postgres from 'postgres';
 import {
-  CustomerField,
   CustomersTableType,
   InvoiceForm,
-  InvoicesTable,
   LatestInvoiceRaw,
   Revenue,
-  ProveedorField
+  ProveedorField,
+  GastosTabla
 } from '../definitions';
 import { formatCurrency } from '../utils';
 
@@ -86,60 +85,63 @@ export async function fetchCardData() {
   }
 }
 
-const ITEMS_PER_PAGE = 6;
-export async function fetchFilteredInvoices(
+const ITEMS_PER_PAGE = 10;
+export async function fetchFilteredGastos(
   query: string,
   currentPage: number,
 ) {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
-    const invoices = await sql<InvoicesTable[]>`
+    const gastos = await sql<GastosTabla[]>`
       SELECT
-        invoices.id,
-        invoices.amount,
-        invoices.date,
-        invoices.status,
-        customers.name,
-        customers.email,
-        customers.image_url
-      FROM invoices
-      JOIN customers ON invoices.customer_id = customers.id
+        gastos.id,
+        gastos.fecha,
+        gastos.numero,
+        gastos.importe,
+        gastos.forma_pago,
+        gastos.tipo_gasto,
+        gastos.formato,
+        gastos.vencimiento,
+        gastos.estado,
+        proveedores.nombre AS proveedor_nombre
+      FROM gastos
+      JOIN proveedores ON gastos.proveedor_id = proveedores.id
       WHERE
-        customers.name ILIKE ${`%${query}%`} OR
-        customers.email ILIKE ${`%${query}%`} OR
-        invoices.amount::text ILIKE ${`%${query}%`} OR
-        invoices.date::text ILIKE ${`%${query}%`} OR
-        invoices.status ILIKE ${`%${query}%`}
-      ORDER BY invoices.date DESC
+        proveedores.nombre ILIKE ${`%${query}%`} OR
+        gastos.numero ILIKE ${`%${query}%`} OR
+        gastos.importe::text ILIKE ${`%${query}%`} OR
+        gastos.fecha::text ILIKE ${`%${query}%`} OR
+        gastos.estado ILIKE ${`%${query}%`}
+      ORDER BY gastos.fecha DESC
       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
 
-    return invoices;
+    return gastos;
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch invoices.');
+    throw new Error('Failed to fetch gastos .');
   }
 }
 
-export async function fetchInvoicesPages(query: string) {
+export async function fetchGastosPaginas(query: string) {
   try {
     const data = await sql`SELECT COUNT(*)
-    FROM invoices
-    JOIN customers ON invoices.customer_id = customers.id
+    FROM gastos
+    JOIN proveedores ON gastos.proveedor_id = proveedores.id
     WHERE
-      customers.name ILIKE ${`%${query}%`} OR
-      customers.email ILIKE ${`%${query}%`} OR
-      invoices.amount::text ILIKE ${`%${query}%`} OR
-      invoices.date::text ILIKE ${`%${query}%`} OR
-      invoices.status ILIKE ${`%${query}%`}
+      proveedores.nombre ILIKE ${`%${query}%`} OR
+      gastos.numero ILIKE ${`%${query}%`} OR
+      gastos.importe::text ILIKE ${`%${query}%`} OR
+      gastos.fecha::text ILIKE ${`%${query}%`} OR
+      gastos.estado ILIKE ${`%${query}%`}
   `;
 
     const totalPages = Math.ceil(Number(data[0].count) / ITEMS_PER_PAGE);
     return totalPages;
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch total number of invoices.');
+    throw new Error('Failed to fetch total number of gastos.');
   }
 }
 

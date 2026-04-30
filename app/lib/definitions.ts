@@ -91,3 +91,17 @@ export type ProveedorField = {
   id: string;
   nombre: string;
 }
+
+export type GastosTabla = {
+  id: string;
+  created_at: string;
+  fecha: string;
+  proveedor_nombre: string;
+  numero: string;
+  importe: number;
+  forma_pago: string;
+  tipo_gasto: string;
+  formato: string;
+  vencimiento: string;
+  estado: string;
+}
