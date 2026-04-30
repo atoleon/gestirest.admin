@@ -18,7 +18,7 @@ export default async function GastoTabla({
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
           <div className="md:hidden">
-            {/*gastos?.map((gasto) => (
+            {gastos?.map((gasto) => (
               <div
                 key={gasto.id}
                 className="mb-2 w-full rounded-md bg-white p-4"
@@ -28,16 +28,16 @@ export default async function GastoTabla({
                     <div className="mb-2 flex items-center">
                       <p>{gasto.proveedor_nombre}</p>
                     </div>
-                    <p className="text-sm text-gray-500">{gasto.email}</p>
+                    <p className="text-sm text-gray-500">{gasto.numero}</p>
                   </div>
-                  <GastoEstado status={gasto.status} />
+                  <GastoEstado status={gasto.estado} />
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
                   <div>
                     <p className="text-xl font-medium">
-                      {(gasto.amount)}
+                      {formatCurrency(gasto.importe)}
                     </p>
-                    <p>{(gasto.date)}</p>
+                    <p>{formatDateToLocal(gasto.fecha)}</p>
                   </div>
                   <div className="flex justify-end gap-2">
                     <UpdateInvoice id={gasto.id} />
@@ -45,7 +45,7 @@ export default async function GastoTabla({
                   </div>
                 </div>
               </div>
-            ))*/}
+            ))}
           </div>
           <table className="hidden min-w-full text-gray-900 md:table">
             <thead className="rounded-lg text-left text-sm font-normal">
