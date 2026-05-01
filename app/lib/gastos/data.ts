@@ -89,8 +89,12 @@ const ITEMS_PER_PAGE = 10;
 export async function fetchFilteredGastos(
   query: string,
   currentPage: number,
+  from: string,
+  to: string,
 ) {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+  const fromFilter = from ? sql`AND gastos.fecha >= ${from}::date` : sql``;
+  const toFilter = to ? sql`AND gastos.fecha <= ${to}::date` : sql``;
 
   try {
     const gastos = await sql<GastosTabla[]>`
@@ -108,11 +112,15 @@ export async function fetchFilteredGastos(
       FROM gastos
       JOIN proveedores ON gastos.proveedor_id = proveedores.id
       WHERE
-        proveedores.nombre ILIKE ${`%${query}%`} OR
-        gastos.numero ILIKE ${`%${query}%`} OR
-        gastos.importe::text ILIKE ${`%${query}%`} OR
-        gastos.fecha::text ILIKE ${`%${query}%`} OR
-        gastos.estado ILIKE ${`%${query}%`}
+        (
+          proveedores.nombre ILIKE ${`%${query}%`} OR
+          gastos.numero ILIKE ${`%${query}%`} OR
+          gastos.importe::text ILIKE ${`%${query}%`} OR
+          gastos.fecha::text ILIKE ${`%${query}%`} OR
+          gastos.estado ILIKE ${`%${query}%`}
+        )
+        ${fromFilter}
+        ${toFilter}
       ORDER BY gastos.fecha DESC
       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
@@ -124,18 +132,26 @@ export async function fetchFilteredGastos(
   }
 }
 
-export async function fetchGastosPaginas(query: string) {
+export async function fetchGastosPaginas(query: string, from: string, to: string) {
+  const fromFilter = from ? sql`AND gastos.fecha >= ${from}::date` : sql``;
+  const toFilter = to ? sql`AND gastos.fecha <= ${to}::date` : sql``;
+
   try {
-    const data = await sql`SELECT COUNT(*)
-    FROM gastos
-    JOIN proveedores ON gastos.proveedor_id = proveedores.id
-    WHERE
-      proveedores.nombre ILIKE ${`%${query}%`} OR
-      gastos.numero ILIKE ${`%${query}%`} OR
-      gastos.importe::text ILIKE ${`%${query}%`} OR
-      gastos.fecha::text ILIKE ${`%${query}%`} OR
-      gastos.estado ILIKE ${`%${query}%`}
-  `;
+    const data = await sql`
+      SELECT COUNT(*)
+      FROM gastos
+      JOIN proveedores ON gastos.proveedor_id = proveedores.id
+      WHERE
+        (
+          proveedores.nombre ILIKE ${`%${query}%`} OR
+          gastos.numero ILIKE ${`%${query}%`} OR
+          gastos.importe::text ILIKE ${`%${query}%`} OR
+          gastos.fecha::text ILIKE ${`%${query}%`} OR
+          gastos.estado ILIKE ${`%${query}%`}
+        )
+        ${fromFilter}
+        ${toFilter}
+    `;
 
     const totalPages = Math.ceil(Number(data[0].count) / ITEMS_PER_PAGE);
     return totalPages;

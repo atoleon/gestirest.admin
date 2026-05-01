@@ -6,11 +6,15 @@ import { fetchFilteredGastos } from '@/app/lib/gastos/data';
 export default async function GastoTabla({
   query,
   currentPage,
+  from,
+  to,
 }: {
   query: string;
   currentPage: number;
+  from: string;
+  to: string;
 }) {
-  const gastos = await fetchFilteredGastos(query, currentPage);
+  const gastos = await fetchFilteredGastos(query, currentPage, from, to);
 
   return (
     <div className="mt-6 flow-root">
