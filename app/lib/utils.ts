@@ -3,7 +3,7 @@ import { Revenue } from './definitions';
 export const formatCurrency = (amount: number) => {
   return amount.toLocaleString('es-ES', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'EUR',
   });
 };
 

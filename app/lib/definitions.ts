@@ -92,6 +92,23 @@ export type ProveedorField = {
   nombre: string;
 }
 
+export type IngresosTabla = {
+  id: number;
+  fecha: string;
+  efectivo: number;
+  tarjeta: number;
+  total: number;
+  tipo_ingreso: string;
+}
+
+export type IngresoForm = {
+  id: number;
+  fecha: string;
+  efectivo: number;
+  tarjeta: number;
+  tipo_ingreso: string;
+}
+
 export type GastosTabla = {
   id: string;
   created_at: string;
