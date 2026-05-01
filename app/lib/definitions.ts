@@ -92,6 +92,27 @@ export type ProveedorField = {
   nombre: string;
 }
 
+export type ProveedoresTabla = {
+  id: number;
+  nombre: string;
+  razon_social: string;
+  cif: string;
+  ciudad: string;
+  provincia: string;
+}
+
+export type ProveedorFormData = {
+  id: number;
+  nombre: string;
+  razon_social: string;
+  cif: string;
+  direccion1: string;
+  direccion2: string;
+  codigo_postal: string;
+  ciudad: string;
+  provincia: string;
+}
+
 export type IngresosTabla = {
   id: number;
   fecha: string;

@@ -21,6 +21,7 @@ const links = [
   { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
   { name: 'Gastos', href: '/dashboard/gastos', icon: DocumentDuplicateIcon },
   { name: 'Ingresos', href: '/dashboard/ingresos', icon: DocumentDuplicateIcon },
+  { name: 'Proveedores', href: '/dashboard/proveedores', icon: DocumentDuplicateIcon },
 ];
 
 export default function NavLinks() {
