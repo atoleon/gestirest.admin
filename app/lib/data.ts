@@ -11,6 +11,28 @@ import { formatCurrency } from './utils';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
+export async function fetchIncomingsCurrentMonth(): Promise<number> {
+  const data = await sql<{ total: number }[]>`
+    SELECT COALESCE(SUM(total), 0) AS total
+    FROM ingresos
+    WHERE fecha >= DATE_TRUNC('month', CURRENT_DATE)
+    AND fecha < DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month'
+  `;
+
+  return Number(data[0].total);
+}
+
+export async function fetchExpensesCurrentMonth(): Promise<number> {
+  const data = await sql<{ total: number }[]>`
+    SELECT COALESCE(SUM(importe), 0) AS total
+    FROM gastos
+    WHERE fecha >= DATE_TRUNC('month', CURRENT_DATE)
+    AND fecha < DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month'
+  `;
+
+  return Number(data[0].total);
+}
+
 export async function fetchRevenue() {
   try {
     // Artificially delay a response for demo purposes.

@@ -5,7 +5,12 @@ import {
   InboxIcon,
 } from '@heroicons/react/24/outline';
 import { lusitana } from '@/app/ui/fonts';
-import { fetchCardData } from '@/app/lib/data';
+import {
+  fetchCardData,
+  fetchIncomingsCurrentMonth,
+  fetchExpensesCurrentMonth,
+} from "@/app/lib/data";
+import { formatCurrency } from "@/app/lib/utils";
 
 const iconMap = {
   collected: BanknotesIcon,
@@ -15,17 +20,31 @@ const iconMap = {
 };
 
 export default async function CardWrapper() {
-  const {
-    numberOfInvoices,
-    numberOfCustomers,
-    totalPaidInvoices,
-    totalPendingInvoices,
-  } = await fetchCardData();
+  const currentMonthName = new Date()
+    .toLocaleString("es-ES", {
+      month: "long",
+    })
+    .toUpperCase();
+
+  const incomingCurrentMonth = await fetchIncomingsCurrentMonth();
+  const expensesCurrentMonth = await fetchExpensesCurrentMonth();
+
+  const { numberOfInvoices, numberOfCustomers } = await fetchCardData();
 
   return (
     <>
-      <Card title="Collected" value={totalPaidInvoices} type="collected" />
-      <Card title="Pending" value={totalPendingInvoices} type="pending" />
+      <Card
+        title={`INGRESOS ${currentMonthName}`}
+        value={formatCurrency(incomingCurrentMonth)}
+        type="collected"
+        color="bg-green-100 text-green-700"
+      />
+      <Card
+        title={`GASTOS ${currentMonthName}`}
+        value={formatCurrency(expensesCurrentMonth)}
+        type="collected"
+        color="bg-red-100 text-red-700"
+      />
       <Card title="Total Invoices" value={numberOfInvoices} type="invoices" />
       <Card
         title="Total Customers"
@@ -40,16 +59,20 @@ export function Card({
   title,
   value,
   type,
+  color,
 }: {
   title: string;
   value: number | string;
-  type: 'invoices' | 'customers' | 'pending' | 'collected';
+  type: "invoices" | "customers" | "pending" | "collected";
+  color?: string;
 }) {
   const Icon = iconMap[type];
 
   return (
     <div className="rounded-xl bg-gray-50 p-2 shadow-sm">
-      <div className="flex p-4">
+      <div
+        className={`flex p-4 ${color ? color : "bg-gray-100 text-gray-700"} rounded-lg`}
+      >
         {Icon ? <Icon className="h-5 w-5 text-gray-700" /> : null}
         <h3 className="ml-2 text-sm font-medium">{title}</h3>
       </div>
