@@ -156,3 +156,29 @@ export type GastoForm = {
   vencimiento: string | null;
   estado: 'Pendiente' | 'Pagado';
 }
+
+export type ProductosTabla = {
+  id: number;
+  fecha: string;
+  proveedor_nombre: string;
+  descripcion: string;
+  unidades: number | null;
+  kg: number | null;
+  precio: number;
+  descuento: number | null;
+  Igic: number;
+  etiquetas: string | null;
+}
+
+export type ProductoForm = {
+  id: number;
+  proveedor_id: number;
+  fecha: string;
+  descripcion: string;
+  unidades: number | null;
+  kg: number | null;
+  precio: number;
+  descuento: number | null;
+  Igic: number;
+  etiquetas: string | null;
+}
