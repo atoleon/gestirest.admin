@@ -35,15 +35,16 @@ export async function fetchExpensesCurrentMonth(): Promise<number> {
 
 export async function fetchRevenue() {
   try {
-    // Artificially delay a response for demo purposes.
-    // Don't do this in production :)
-
-    // console.log('Fetching revenue data...');
-    // await new Promise((resolve) => setTimeout(resolve, 3000));
-
-    const data = await sql<Revenue[]>`SELECT * FROM revenue`;
-
-    // console.log('Data fetch completed after 3 seconds.');
+    const data = await sql<Revenue[]>`
+    SELECT 
+    TO_CHAR(fecha, 'YYYY-MM') AS mes,
+    SUM(total) AS total
+    FROM ingresos
+    WHERE fecha >= CURRENT_DATE - INTERVAL '12 months'
+    AND fecha <  date_trunc('month', CURRENT_DATE)
+    GROUP BY mes
+    ORDER BY mes;
+`;
 
     return data;
   } catch (error) {

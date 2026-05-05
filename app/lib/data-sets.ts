@@ -14,7 +14,9 @@ export const tipoGasto = [
     "Mantenimiento",
     "Servicio",
     "Renta",
-    "Varios"
+    "Personal extra",
+    "Varios",
+    "Efectivo"
 ]
 
 export const formatoGasto = [
