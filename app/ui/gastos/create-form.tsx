@@ -67,7 +67,7 @@ export default function Form({ proveedores }: { proveedores: ProveedorField[] })
               <input
                 id="fecha"
                 name="fecha"
-                type="string"
+                type="date"
                 placeholder="AAAA-MM-DD"
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="fecha-error"
@@ -144,7 +144,10 @@ export default function Form({ proveedores }: { proveedores: ProveedorField[] })
 
         {/* Forma de pago */}
         <div className="mb-4">
-          <label htmlFor="forma-pago" className="mb-2 block text-sm font-medium">
+          <label
+            htmlFor="forma-pago"
+            className="mb-2 block text-sm font-medium"
+          >
             Forma de pago
           </label>
           <div className="relative">
@@ -178,7 +181,10 @@ export default function Form({ proveedores }: { proveedores: ProveedorField[] })
 
         {/* Tipo de gasto */}
         <div className="mb-4">
-          <label htmlFor="tipo-gasto" className="mb-2 block text-sm font-medium">
+          <label
+            htmlFor="tipo-gasto"
+            className="mb-2 block text-sm font-medium"
+          >
             Tipo de gasto
           </label>
           <div className="relative">
@@ -246,7 +252,10 @@ export default function Form({ proveedores }: { proveedores: ProveedorField[] })
 
         {/* Vencimiento */}
         <div className="mb-4">
-          <label htmlFor="vencimiento" className="mb-2 block text-sm font-medium">
+          <label
+            htmlFor="vencimiento"
+            className="mb-2 block text-sm font-medium"
+          >
             Vencimiento
           </label>
           <div className="relative mt-2 rounded-md">
