@@ -263,7 +263,7 @@ export default function Form({ proveedores }: { proveedores: ProveedorField[] })
               <input
                 id="vencimiento"
                 name="vencimiento"
-                type="string"
+                type="date"
                 placeholder="AAAA-MM-DD"
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="vencimiento-error"
