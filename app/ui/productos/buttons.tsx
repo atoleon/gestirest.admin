@@ -1,6 +1,9 @@
-import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+'use client';
+
+import { PencilIcon, PlusIcon, ShoppingCartIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { borrarProducto } from '@/app/lib/productos/actions';
+import { useOrderProducto } from '@/app/contexts/order-producto';
 
 export function CrearProducto() {
   return (
@@ -35,5 +38,27 @@ export function BorrarProducto({ id }: { id: number }) {
         <TrashIcon className="w-5" />
       </button>
     </form>
+  );
+}
+
+export function AñadirAlPedido({
+  id,
+  proveedor,
+  descripcion,
+}: {
+  id: number;
+  proveedor: string;
+  descripcion: string;
+}) {
+  const { openModal } = useOrderProducto();
+
+  return (
+    <button
+      onClick={() => openModal({ id, proveedor, descripcion })}
+      className="rounded-md border p-2 hover:bg-blue-50 hover:border-blue-300 transition-colors"
+      aria-label="Añadir al pedido"
+    >
+      <ShoppingCartIcon className="w-5 text-blue-600" />
+    </button>
   );
 }

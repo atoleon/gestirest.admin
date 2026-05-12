@@ -5,6 +5,7 @@ import {
   HomeIcon,
   DocumentDuplicateIcon,
   ShoppingBagIcon,
+  ClipboardDocumentListIcon,
 } from "@heroicons/react/24/outline";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -20,6 +21,7 @@ const links = [
   },
   { name: "Productos", href: "/dashboard/productos", icon: ShoppingBagIcon },
   { name: "Proveedores", href: "/dashboard/proveedores", icon: TruckIcon },
+  { name: "Pedido", href: "/dashboard/pedido", icon: ClipboardDocumentListIcon },
 ];
 
 export default function NavLinks() {

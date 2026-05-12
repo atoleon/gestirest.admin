@@ -182,3 +182,10 @@ export type ProductoForm = {
   Igic: number;
   etiquetas: string | null;
 }
+
+export type OrderProducto = {
+  producto_id: number;
+  proveedor: string;
+  descripcion: string;
+  cantidad: number;
+}

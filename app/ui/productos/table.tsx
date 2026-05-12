@@ -1,4 +1,4 @@
-import { ActualizarProducto, BorrarProducto } from '@/app/ui/productos/buttons';
+import { ActualizarProducto, AñadirAlPedido, BorrarProducto } from '@/app/ui/productos/buttons';
 import { formatDateToLocal } from '@/app/lib/utils';
 import { fetchFilteredProductos } from '@/app/lib/productos/data';
 
@@ -47,6 +47,7 @@ export default async function ProductosTabla({
                     </p>
                   </div>
                   <div className="flex justify-end gap-2">
+                    <AñadirAlPedido id={producto.id} proveedor={producto.proveedor_nombre} descripcion={producto.descripcion} />
                     <ActualizarProducto id={producto.id} />
                     <BorrarProducto id={producto.id} />
                   </div>
@@ -124,6 +125,7 @@ export default async function ProductosTabla({
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
+                      <AñadirAlPedido id={producto.id} proveedor={producto.proveedor_nombre} descripcion={producto.descripcion} />
                       <ActualizarProducto id={producto.id} />
                       <BorrarProducto id={producto.id} />
                     </div>
