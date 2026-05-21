@@ -12,13 +12,29 @@ import {
   DocumentCheckIcon
 } from '@heroicons/react/24/outline';
 import { Button } from '@/app/ui/button';
-import { crearGasto, State } from '@/app/lib/gastos/actions';
+import { crearGasto, State, checkNumeroGasto } from "@/app/lib/gastos/actions";
 import { formaPago, tipoGasto, formatoGasto, estadoGasto } from '@/app/lib/data-sets';
-import { useActionState } from 'react';
+import { useActionState, useState, useRef } from "react";
 
 export default function Form({ proveedores }: { proveedores: ProveedorField[] }) {
   const initialState: State = { message: null, errors: {} };
   const [state, formAction] = useActionState(crearGasto, initialState);
+  const [existeNumero, setExisteNumero] = useState(false);
+  const proveedorRef = useRef<HTMLSelectElement>(null);
+
+  const onChangeNumero = async (event: any) => {
+    console.log("Número input changed:", event.target.value);
+    if (!event.target.value || !proveedorRef.current?.value) {
+      return;
+    }
+
+    const numero = event.target.value;
+    const proveedorId = proveedorRef.current.value;
+
+    const existe = await checkNumeroGasto(numero, proveedorId);
+    setExisteNumero(existe);
+    console.log("Número exists:", existe);
+  };
 
   return (
     <form action={formAction}>
@@ -31,6 +47,8 @@ export default function Form({ proveedores }: { proveedores: ProveedorField[] })
           <div className="relative">
             <select
               id="proveedor"
+              ref={proveedorRef}
+              onChange={onChangeNumero}
               name="proveedorId"
               className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               defaultValue=""
@@ -82,6 +100,9 @@ export default function Form({ proveedores }: { proveedores: ProveedorField[] })
                   {error}
                 </p>
               ))}
+            {existeNumero ? (
+              <p className="mt-2 text-sm text-red-500">{existeNumero}</p>
+            ) : null}
           </div>
         </div>
 
@@ -96,6 +117,7 @@ export default function Form({ proveedores }: { proveedores: ProveedorField[] })
                 id="numero"
                 name="numero"
                 type="string"
+                onBlur={onChangeNumero}
                 placeholder="Introduce número de documento"
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="numero-error"
@@ -110,6 +132,11 @@ export default function Form({ proveedores }: { proveedores: ProveedorField[] })
                   {error}
                 </p>
               ))}
+            {existeNumero && (
+              <p className="mt-2 text-sm text-red-500">
+                El número de documento ya existe para este proveedor.
+              </p>
+            )}
           </div>
         </div>
 
@@ -328,7 +355,9 @@ export default function Form({ proveedores }: { proveedores: ProveedorField[] })
         >
           Cancelar
         </Link>
-        <Button type="submit">Crear Gasto</Button>
+        <Button type="submit" disabled={!!existeNumero}>
+          Crear Gasto
+        </Button>
       </div>
     </form>
   );

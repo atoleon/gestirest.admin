@@ -139,3 +139,20 @@ export async function borrarGasto(id: string): Promise<void> {
     throw new Error('Failed to Delete Gasto.');
   }
 }
+
+export async function checkNumeroGasto(
+  numero: string,
+  proveedorId: string,
+): Promise<boolean> {
+  try {
+    const result = await sql`
+      SELECT COUNT(*) AS count
+      FROM gastos
+      WHERE numero = ${numero} AND proveedor_id = ${proveedorId}
+    `;
+    return result[0].count > 0;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to Check Gasto Numero.");
+  }
+}
