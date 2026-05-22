@@ -3,7 +3,7 @@ import { ProveedoresTabla, ProveedorFormData } from '../definitions';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 50;
 
 export async function fetchFilteredProveedores(query: string, currentPage: number) {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;

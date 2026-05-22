@@ -3,7 +3,7 @@ import { IngresosTabla, IngresoForm } from '../definitions';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 50;
 
 export async function fetchFilteredIngresos(
   query: string,
