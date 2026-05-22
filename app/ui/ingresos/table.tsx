@@ -14,6 +14,10 @@ export default async function IngresosTabla({
   to: string;
 }) {
   const ingresos = await fetchFilteredIngresos(query, currentPage, from, to);
+  const importeTotal = ingresos.reduce(
+    (sum, ingreso) => sum + Number(ingreso.total),
+    0,
+  );
 
   return (
     <div className="mt-6 flow-root">
@@ -100,6 +104,11 @@ export default async function IngresosTabla({
               ))}
             </tbody>
           </table>
+          {importeTotal > 0 && (
+            <div className="mt-4 flex justify-end px-4 py-2">
+              {formatCurrency(importeTotal)} €
+            </div>
+          )}
         </div>
       </div>
     </div>

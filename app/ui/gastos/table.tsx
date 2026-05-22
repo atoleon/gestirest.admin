@@ -15,6 +15,10 @@ export default async function GastoTabla({
   to: string;
 }) {
   const gastos = await fetchFilteredGastos(query, currentPage, from, to);
+  const importeTotal = gastos.reduce(
+    (sum, gasto) => sum + Number(gasto.importe),
+    0,
+  );
 
   return (
     <div className="mt-6 flow-root">
@@ -128,6 +132,11 @@ export default async function GastoTabla({
               ))}
             </tbody>
           </table>
+          {importeTotal > 0 && (
+            <div className="mt-4 flex justify-end px-4 py-2">
+              {formatCurrency(importeTotal)} €
+            </div>
+          )}
         </div>
       </div>
     </div>
