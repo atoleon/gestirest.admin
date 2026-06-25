@@ -203,6 +203,30 @@ export async function fetchProveedores() {
   }
 }
 
+export type GastosPorTipo = {
+  tipo_gasto: string;
+  total: number;
+};
+
+export async function fetchGastosPorTipoMesActual(): Promise<GastosPorTipo[]> {
+  try {
+    const data = await sql<GastosPorTipo[]>`
+      SELECT
+        tipo_gasto,
+        SUM(importe) AS total
+      FROM gastos
+      WHERE
+        DATE_TRUNC('month', fecha) = DATE_TRUNC('month', CURRENT_DATE)
+      GROUP BY tipo_gasto
+      ORDER BY total DESC
+    `;
+    return data;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch gastos por tipo.');
+  }
+}
+
 export async function fetchFilteredCustomers(query: string) {
   try {
     const data = await sql<CustomersTableType[]>`
