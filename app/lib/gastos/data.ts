@@ -208,7 +208,10 @@ export type GastosPorTipo = {
   total: number;
 };
 
-export async function fetchGastosPorTipoMesActual(): Promise<GastosPorTipo[]> {
+export async function fetchGastosPorTipoMesActual(mes?: string): Promise<GastosPorTipo[]> {
+  const d = mes ? new Date(`${mes}-01`) : new Date();
+  const startDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-01`;
+
   try {
     const data = await sql<GastosPorTipo[]>`
       SELECT
@@ -216,7 +219,8 @@ export async function fetchGastosPorTipoMesActual(): Promise<GastosPorTipo[]> {
         SUM(importe) AS total
       FROM gastos
       WHERE
-        DATE_TRUNC('month', fecha) = DATE_TRUNC('month', CURRENT_DATE)
+        fecha >= ${startDate}::date
+        AND fecha < (${startDate}::date + INTERVAL '1 month')
       GROUP BY tipo_gasto
       ORDER BY total DESC
     `;

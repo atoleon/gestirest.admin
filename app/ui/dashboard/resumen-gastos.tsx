@@ -2,12 +2,12 @@ import { lusitana } from '@/app/ui/fonts';
 import { fetchGastosPorTipoMesActual } from '@/app/lib/gastos/data';
 import { formatCurrency } from '@/app/lib/utils';
 
-export default async function ResumenGastos() {
-  const datos = await fetchGastosPorTipoMesActual();
+export default async function ResumenGastos({ mes }: { mes?: string }) {
+  const datos = await fetchGastosPorTipoMesActual(mes);
 
-  const now = new Date();
-  const mesActual = now.toLocaleString('es-ES', { month: 'long', year: 'numeric' });
-  const titulo = `Resumen de gastos ${mesActual.charAt(0).toUpperCase()}${mesActual.slice(1)}`;
+  const displayDate = mes ? new Date(`${mes}-01`) : new Date();
+  const mesLabel = displayDate.toLocaleString('es-ES', { month: 'long', year: 'numeric' });
+  const titulo = `Resumen de gastos ${mesLabel.charAt(0).toUpperCase()}${mesLabel.slice(1)}`;
 
   if (!datos || datos.length === 0) {
     return (

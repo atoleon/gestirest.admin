@@ -11,23 +11,30 @@ import { formatCurrency } from './utils';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
-export async function fetchIncomingsCurrentMonth(): Promise<number> {
+function mesStartDate(mes?: string): string {
+  const d = mes ? new Date(`${mes}-01`) : new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-01`;
+}
+
+export async function fetchIncomingsCurrentMonth(mes?: string): Promise<number> {
+  const startDate = mesStartDate(mes);
   const data = await sql<{ total: number }[]>`
     SELECT COALESCE(SUM(total), 0) AS total
     FROM ingresos
-    WHERE fecha >= DATE_TRUNC('month', CURRENT_DATE)
-    AND fecha < DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month'
+    WHERE fecha >= ${startDate}::date
+    AND fecha < (${startDate}::date + INTERVAL '1 month')
   `;
 
   return Number(data[0].total);
 }
 
-export async function fetchExpensesCurrentMonth(): Promise<number> {
+export async function fetchExpensesCurrentMonth(mes?: string): Promise<number> {
+  const startDate = mesStartDate(mes);
   const data = await sql<{ total: number }[]>`
     SELECT COALESCE(SUM(importe), 0) AS total
     FROM gastos
-    WHERE fecha >= DATE_TRUNC('month', CURRENT_DATE)
-    AND fecha < DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month'
+    WHERE fecha >= ${startDate}::date
+    AND fecha < (${startDate}::date + INTERVAL '1 month')
   `;
 
   return Number(data[0].total);

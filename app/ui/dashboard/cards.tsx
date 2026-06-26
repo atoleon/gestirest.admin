@@ -19,15 +19,14 @@ const iconMap = {
   invoices: InboxIcon,
 };
 
-export default async function CardWrapper() {
-  const currentMonthName = new Date()
-    .toLocaleString("es-ES", {
-      month: "long",
-    })
+export default async function CardWrapper({ mes }: { mes?: string }) {
+  const displayDate = mes ? new Date(`${mes}-01`) : new Date();
+  const currentMonthName = displayDate
+    .toLocaleString("es-ES", { month: "long" })
     .toUpperCase();
 
-  const incomingCurrentMonth = await fetchIncomingsCurrentMonth();
-  const expensesCurrentMonth = await fetchExpensesCurrentMonth();
+  const incomingCurrentMonth = await fetchIncomingsCurrentMonth(mes);
+  const expensesCurrentMonth = await fetchExpensesCurrentMonth(mes);
 
   const { numberOfInvoices, numberOfCustomers } = await fetchCardData();
 
