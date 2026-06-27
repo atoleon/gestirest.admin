@@ -8,16 +8,17 @@ export const formaPago = [
 ]
 
 export const tipoGasto = [
-    "Comida",
-    "Bebida",
-    "Consumible",
-    "Mantenimiento",
-    "Servicio",
-    "Renta",
-    "Personal",
-    "Personal extra",
-    "Varios"
-]
+  "Comida",
+  "Bebida",
+  "Consumible",
+  "Mantenimiento",
+  "Servicio",
+  "Renta",
+  "Personal",
+  "Personal extra",
+  "Tributos",
+  "Varios",
+];
 
 export const formatoGasto = [
     "Papel",
